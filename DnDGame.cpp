@@ -1,7 +1,11 @@
 ﻿// DnDGame.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 #include <iostream>
+#include <string>
+#include <stdexcept>
+
 class Character {
+private:
     std::string CharacterName;
     std::string CharacterRace;
     std::string CharacterClass;
@@ -111,6 +115,17 @@ public:
     }
 };*/
 
+bool tryParse(std::string& input, int& output) {
+    try {
+        output = std::stoi(input);
+    }
+    catch (std::invalid_argument) {
+        return false;
+    }
+    return true;
+}
+
+
 int main()
 {
     std::cout << "Welcome to the world of D&D!\n";
@@ -123,39 +138,40 @@ _(())\_)())\(()\ _  ((_))   )\ /(_))    )\  ' )\  )\ ) )\(_))//((_|()\ )\
  \ \/\/ / _ \ '_| / _` |  / _ \|  _| | '  \() _ \ ' \)|_-<  _/ -_)| '_(_-< 
   \_/\_/\___/_| |_\__,_|  \___/|_|   |_|_|_|\___/_||_|/__/\__\___||_| /__/ 
                                                                            )" << std::endl;
-    std::string name, race, charclass;
+    std::string name, race, charclass, input;
     int race_num=0;
     int class_num = 0;
     std::cout << "Please enter your character name: "<<std::endl;
-    std::cin >> name;
+    getline(std::cin, name);
     
     while (race_num != 1 && race_num != 2 && race_num != 3)
     {
         std::cout << "Please choose your character race: " << std::endl;
         std::cout << "(1) Human     (2) Elf     (3) Dwarf       (Press numbers to choose between the races)" << std::endl;
-        std::cin >> race_num;
-        if (isdigit(race_num) == true)
+        
+
+        getline(std::cin, input);
+
+        while (!tryParse(input, race_num))
         {
-            switch (race_num)
-            {
-            case 1:
-                race = "Human";
-                break;
-            case 2:
-                race = "Elf";
-                break;
-            case 3:
-                race = "Dwarf";
-                break;
-            default:
-                std::cout << "- Invalid race -" << std::endl;
-                break;
-            }
+            std::cout << "Bad entry. Enter a NUMBER: ";
+            getline(std::cin, input);
         }
-        else
+
+        switch (race_num)
         {
-            std::cin.clear();
-            std::cin.ignore();
+        case 1:
+            race = "Human";
+            break;
+        case 2:
+            race = "Elf";
+            break;
+        case 3:
+            race = "Dwarf";
+            break;
+        default:
+            std::cout << "- Invalid race -" << std::endl;
+            break;
         }
     }
 
@@ -163,30 +179,30 @@ _(())\_)())\(()\ _  ((_))   )\ /(_))    )\  ' )\  )\ ) )\(_))//((_|()\ )\
     {
         std::cout << "Please choose your character class: " << std::endl;
         std::cout << "(1) Warriror     (2) Hunter     (3) Mage       (Press numbers to choose between the races)" << std::endl;
-        std::cin >> class_num;
-        if (isdigit(class_num) == true)
+        getline(std::cin, input);
+
+        while (!tryParse(input, class_num))
         {
-            switch (class_num)
-            {
-            case 1:
-                charclass = "Warrior";
-                break;
-            case 2:
-                charclass = "Hunter";
-                break;
-            case 3:
-                charclass = "Mage";
-                break;
-            default:
-                std::cout << "- Invalid class -" << std::endl;
-                break;
-            }
+            std::cout << "Bad entry. Enter a NUMBER: ";
+            getline(std::cin, input);
         }
-        else
+       
+        switch (class_num)
         {
-            //std::cin.clear();
-           // std::cin.ignore();
+        case 1:
+            charclass = "Warrior";
+            break;
+        case 2:
+            charclass = "Hunter";
+            break;
+        case 3:
+            charclass = "Mage";
+            break;
+        default:
+            std::cout << "- Invalid class -" << std::endl;
+            break;
         }
+        
     }
 
     Character Player1(name, race, charclass, 1);
